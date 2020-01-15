@@ -10,7 +10,7 @@ here = os.path.abspath(os.path.dirname(__file__))
 description = "project jupiter"
 
 with open(os.path.join(here, 'README.md')) as f:
-  long_description = f.read()
+    long_description = f.read()
 
 setuptools.setup(
     name = 'jupiter',
