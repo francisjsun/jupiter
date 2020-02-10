@@ -1,4 +1,4 @@
-# Copyright (C) 2020 F.S., all rights reserved.
+# Copyright (C) 2020 Francis Sun, all rights reserved.
 
 """A copyright utility"""
 
@@ -20,8 +20,8 @@ class Copyright:
     _formaters = {}
 
     def __init__(self, file_path, author):
-        self.file_path = file_path 
-        self.author = author 
+        self.file_path = file_path
+        self.author = author
         file_name = self.file_path.split(os.path.sep)[-1]
 
         if file_name == 'CMakeLists.txt':
@@ -31,9 +31,8 @@ class Copyright:
         else:
             self.file_type = self.file_path.split('.')[-1]
 
-        self.declaration = Copyright._declaration.format(\
+        self.declaration = Copyright._declaration.format(
                 datetime.date.today().year, self.author)
-
 
     def _c_cpp_formater(self):
         return "/* " + self.declaration + " */"
@@ -41,7 +40,7 @@ class Copyright:
         _formaters[ft] = _c_cpp_formater
 
     def _py_formater(self):
-        return "# " + self.declaration 
+        return "# " + self.declaration
     for ft in _file_type['python']:
         _formaters[ft] = _py_formater
 
@@ -54,7 +53,6 @@ class Copyright:
         return "\" " + self.declaration
     for ft in _file_type['vim']:
         _formaters[ft] = _vim_formater
-
 
     def Get(self):
         if self.file_type in Copyright._formaters:
@@ -75,10 +73,11 @@ class Copyright:
             tmp_f.write(self.Get() + "\n" + origin_content)
             os.replace(tmp_filename, self.file_path)
 
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('file_path')
-    parser.add_argument('author') 
+    parser.add_argument('author')
     opt = parser.parse_args()
     cr = Copyright(opt.file_path, opt.author)
     cr.Write()
