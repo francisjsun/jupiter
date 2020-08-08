@@ -14,7 +14,8 @@ class Copyright:
             'c/c++': ['h', 'c', 'cpp', 'cc'],
             'python': ['py'],
             'cmake': ['cmake'],
-            'vim': ['vim']
+            'vim': ['vim'],
+            'shell': ['sh']
     }
     _declaration = "Copyright (C) {0} {1}, all rights reserved."
     _formaters = {}
@@ -53,6 +54,11 @@ class Copyright:
         return "\" " + self.declaration
     for ft in _file_type['vim']:
         _formaters[ft] = _vim_formater
+
+    def _shell_formater(self):
+        return "# " + self.declaration
+    for ft in _file_type['shell']:
+        _formaters[ft] = _shell_formater
 
     def Get(self):
         if self.file_type in Copyright._formaters:
