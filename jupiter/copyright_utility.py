@@ -35,6 +35,7 @@ class Copyright:
         self.declaration = Copyright._declaration.format(
                 datetime.date.today().year, self.author)
 
+
     def _c_cpp_formater(self):
         return "/* " + self.declaration + " */"
     for ft in _file_type['c/c++']:
