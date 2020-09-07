@@ -9,7 +9,6 @@ import os.path
 
 
 class Copyright:
-    _unknown_file_type = "unknown file type"
     _file_type = {
             'c/c++': ['h', 'c', 'cpp', 'cc'],
             'python': ['py'],
@@ -34,7 +33,6 @@ class Copyright:
 
         self.declaration = Copyright._declaration.format(
                 datetime.date.today().year, self.author)
-
 
     def _c_cpp_formater(self):
         return "/* " + self.declaration + " */"
@@ -61,12 +59,9 @@ class Copyright:
     for ft in _file_type['shell']:
         _formaters[ft] = _shell_formater
 
-    def Get(self):
+    def get_declaration(self):
         if self.file_type in Copyright._formaters:
             return Copyright._formaters[self.file_type](self)
-        else:
-            return Copyright._unknown_file_type + ": " + self.file_type + \
-                    ", @file_path: " + self.file_path
 
     tmp_filename_suffix = ".fjcu"
 
@@ -77,7 +72,7 @@ class Copyright:
             if os.path.isfile(self.file_path):
                 with open(self.file_path, 'r') as origin_f:
                     origin_content = origin_f.read()
-            tmp_f.write(self.Get() + "\n" + origin_content)
+            tmp_f.write(self.get_declaration() + "\n" + origin_content)
             os.replace(tmp_filename, self.file_path)
 
 
