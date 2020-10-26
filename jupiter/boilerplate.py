@@ -4,17 +4,15 @@ import os
 from .copyright_declaration import Copyright
 
 
-def get_include_guard(header_path, prefix=None):
+def get_include_guard(header_path, macro_ignored_dir, prefix=None):
     # rm the beginning os.sep
     if header_path[0] == os.sep:
         header_path = header_path[1:]
     # rm insignificant beginning word, e.g. src, test
-    header_path_parts = header_path.split(os.sep)
-    first_part = header_path_parts[0]
-    insignificant_beginning_word = ['src', 'test']
-    for w in insignificant_beginning_word:
-        if first_part == w:
+    for w in macro_ignored_dir:
+        if header_path.startswith(w):
             header_path = header_path[len(w) + 1:]
+            break
 
     header_path = header_path.replace(os.sep, '_')
     header_path = header_path.replace('.', '_')
@@ -27,7 +25,7 @@ def get_include_guard(header_path, prefix=None):
             '#endif  // ' + header_path]
 
 
-def get(abs_project_dir, rel_file_path, author, prefix):
+def get(abs_project_dir, rel_file_path, author, macro_ignored_dir, prefix):
     # rm the beginning os.sep
     if rel_file_path[0] == os.sep:
         rel_file_path = rel_file_path[1:]
@@ -43,7 +41,8 @@ def get(abs_project_dir, rel_file_path, author, prefix):
     file_path_ext = e_r[1]
 
     if file_path_ext == 'h':
-        ret['include_guard'] = get_include_guard(rel_file_path, prefix)
+        ret['include_guard'] = get_include_guard(
+            rel_file_path, macro_ignored_dir, prefix)
 
     if file_path_ext == 'cpp' or file_path_ext == 'c' or file_path_ext == 'cc':
         # check if corresponding header file exists
