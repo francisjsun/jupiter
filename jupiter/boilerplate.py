@@ -37,6 +37,8 @@ def get(abs_project_dir, rel_file_path, author, macro_ignored_dir, prefix):
         ret["copyright_declaration"] = cr_d
 
     e_r = rel_file_path.rsplit('.', maxsplit=1)
+    if len(e_r) < 2:
+        return ret
     file_path_root = e_r[0]
     file_path_ext = e_r[1]
 
